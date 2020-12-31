@@ -21,27 +21,37 @@ abstract class Service {
 
   }
 
-  // valid methods *MUST* be declared as empty here
-  // overridden by extended classes
+  /*
+   * all methods *MUST* be declared empty here as they are overridden by
+   * extended classes
+   */
 
-  // Valid HTTP 1.1 methods used in RESTful
-  // https://restfulapi.net/http-methods/
+  /*
+   * valid HTTP 1.1 methods used in RESTful
+   * <https://restfulapi.net/http-methods/>
+   */
   public function GET()       {}
   public function HEAD()      {}
   public function POST()      {}
   public function PUT()       {}
   public function DELETE()    {}
-  // Extended HTTP method used in RESTful
-  // https://tools.ietf.org/html/rfc5789
+  /*
+   * extended HTTP 1.1 method used in RESTful
+   * <https://tools.ietf.org/html/rfc5789>
+   */
   public function PATCH()     {}
-  // HTTP 1.1 methods *NOT USED* in RESTful
-  // https://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html
-  // https://tools.ietf.org/html/rfc7231
+  /*
+   * HTTP 1.1 methods *NOT* used in RESTful
+   * <https://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html>
+   * <https://tools.ietf.org/html/rfc7231>
+   */
   public function CONNECT()   {}
   public function OPTIONS()   {}
   public function TRACE()     {}
-  // WebDAV
-  // https://tools.ietf.org/html/rfc4918
+  /*
+   * WebDAV
+   * <https://tools.ietf.org/html/rfc4918>
+   */
   public function PROPFIND()  {}
   public function LOCK()      {}
   public function UNLOCK()    {}

@@ -4,10 +4,10 @@ namespace Nolib\REST;
 
 class Pong extends Service {
 
-  public function __construct() {
-    $answer->code = 200;
-    $answer->attach($this->request);
-    $answer->send();
+  public function GET() {
+    $this->answer->code = 200;
+    $this->answer->attach($this->request);
+    $this->answer->send();
   }
 
 }

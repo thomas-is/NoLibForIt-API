@@ -4,18 +4,12 @@ namespace NoLib\REST;
 
 class Request {
 
-  public  $argc;   // (int)   path: argument count
-  public  $argv;   // (array) path: arguments
-  public  $params; // (array) parameters after "?"
+  public  $args   = array();
+  public  $params = array();
   /*
-   *  arguments can be passed via url
-   *  (ie: mydomain.org/api/command/foo/bar?key=abc)
-   *  following C notation:
-   *   argc is argument count (including 'command')
-   *   argv is arguments list (including 'command')
-   *  $argv[0] == 'command'
-   *  $argv[1] == 'foo'
-   *  $argv[2] == 'bar'
+   *  /service/foo/bar?key=abc
+   *
+   *  $args   == array( 'service', 'foo', 'bar' )
    *  $params == array( "key" => "abc" )
    */
   public  $headers = array();
@@ -24,16 +18,21 @@ class Request {
 
   public function __construct() {
 
-    $this->argv = explode( '/', $_SERVER['QUERY_STRING'] );
-    $this->argc = count($this->argv);
+    $path  = parse_url( $_SERVER['REQUEST_URI'], PHP_URL_PATH );
+    $query = parse_url( $_SERVER['REQUEST_URI'], PHP_URL_QUERY );
 
-    $last = $this->argv[$this->argc - 1];
-    parse_str($last, $this->params);
+    $this->args = explode('/',$path);
+    array_shift($this->args);
+
+    parse_str( $query , $this->params);
     array_shift($this->params);
 
     foreach($_SERVER as $key => $value) {
-      if (substr($key, 0, 5) <> 'HTTP_') continue;
-      $header = str_replace(' ', '-', ucwords(str_replace('_', ' ', strtolower(substr($key, 5)))));
+      if (substr($key, 0, 5) <> 'HTTP_') { continue; }
+      $header = substr($key, 5);
+      $header = strtolower($header);
+      $header = ucwords($header,'_');
+      $header = str_replace('_','-',$header);
       $this->headers[$header] = $value;
     }
 
