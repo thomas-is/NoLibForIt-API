@@ -8,7 +8,7 @@ class Answer {
     header($_SERVER["SERVER_PROTOCOL"]." $code");
   }
 
-  public static function json( $obj, int $code = 200 ) {
+  public static function json( $code, $obj ) {
     $body = json_encode($obj, JSON_INVALID_UTF8_IGNORE);
     if( empty($body) ) {
       self::code(520);

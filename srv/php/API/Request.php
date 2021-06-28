@@ -50,6 +50,7 @@ class Request {
     $this->argc = count($this->argv);
 
 
+    $param = array();
     if( @$uri['query'] ) {
       $param = explode( '&', $uri['query'] );
     }
@@ -83,6 +84,22 @@ class Request {
     $this->body    = file_get_contents('php://input');
 
   }
+
+  public function requireAuth() {
+    $xauth = @$this->header["Authorization"];
+    if( ! $xauth ) {
+      Answer::code(401);
+    }
+    if( ! file_exists(@API_AUTH_FILE) ) {
+      Answer::code(503);
+    }
+    $token = file_get_contents(API_AUTH_FILE);
+    $token = trim($token);
+    if( $xauth != $token ) {
+      Answer::code(403);
+    }
+  }
+
 
 }
 
