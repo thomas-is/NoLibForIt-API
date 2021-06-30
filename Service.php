@@ -1,6 +1,6 @@
 <?php
 
-namespace API;
+namespace NoLibForIt\API;
 
 abstract class Service {
 

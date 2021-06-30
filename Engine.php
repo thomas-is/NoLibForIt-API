@@ -1,6 +1,6 @@
 <?php
 
-namespace API;
+namespace NoLibForIt\API;
 
 class Engine {
 
