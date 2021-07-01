@@ -2,19 +2,22 @@
 
 namespace NoLibForIt\API;
 
+
 abstract class Service {
 
   protected $request;
+  protected $answer;
 
-  public function __construct() {
-    $this->request = new Request;
-    $this->handle();
+  public function __construct( Request $request ) {
+    $this->request = $request;
+    $this->answer = new Answer;
   }
 
-  protected function handle() {
-
+  public function handle() {
+    $reply = new \stdClass;
+    $reply->message = "Undefined handler";
+    $this->answer->json(500,$reply);
   }
-
 
 }
 

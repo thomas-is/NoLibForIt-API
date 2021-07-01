@@ -4,8 +4,8 @@ namespace NoLibForIt\API;
 
 class Ping extends Service {
 
-  protected function handle() {
-    Answer::json(200,$this->request);
+  public function handle() {
+    $this->answer->json(200,$this->request);
   }
 
 
