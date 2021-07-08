@@ -8,7 +8,7 @@ abstract class Service {
   protected $request;
   protected $answer;
 
-  public function __construct( Request $request ) {
+  public function __construct( $request ) {
     $this->request = $request;
     $this->answer = new Answer;
   }

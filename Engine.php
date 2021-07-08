@@ -4,7 +4,7 @@ namespace NoLibForIt\API;
 
 class Engine {
 
-  public static function handle() {
+public static function handle() {
     $request = new Request;
     $serviceClass = @API_SERVICE[@$request->argv[0]];
     if( ! class_exists($serviceClass) ) {
