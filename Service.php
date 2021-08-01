@@ -14,9 +14,7 @@ abstract class Service {
   }
 
   public function handle() {
-    $reply = new \stdClass;
-    $reply->message = "Undefined handler";
-    $this->answer->json(500,$reply);
+    $this->answer->json(500,array("error"=>"not implemented"));
   }
 
 }

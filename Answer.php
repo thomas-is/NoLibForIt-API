@@ -5,7 +5,10 @@ namespace NoLibForIt\API;
 class Answer {
 
   private static function http( int $code ) {
-    header($_SERVER["SERVER_PROTOCOL"]." $code");
+    $protocol = @$_SERVER["SERVER_PROTOCOL"] ?
+      $_SERVER["SERVER_PROTOCOL"] :
+      "HTTP/1.1";
+    header("$protocol $code");
   }
 
   public static function json( $code, $obj ) {

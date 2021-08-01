@@ -2,10 +2,10 @@
 
 namespace NoLibForIt\API;
 
-class Ping extends Service {
+class DumpServer extends Service {
 
   public function handle() {
-    $this->answer->json(200,$this->request);
+    $this->answer->json(200,$_SERVER);
   }
 
 }
