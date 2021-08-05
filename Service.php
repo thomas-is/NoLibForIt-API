@@ -14,7 +14,7 @@ abstract class Service {
   }
 
   public function handle() {
-    $this->answer->json(500,array("error"=>"not implemented"));
+    $this->answer->json(500,array("error"=>"service not implemented"));
   }
 
 }
