@@ -5,8 +5,14 @@ namespace NoLibForIt\API;
 class Answer {
 
   private static function http( int $code ) {
+    if( ! defined('API_HEADERS') ) {
+      define('API_HEADERS',array());
+    }
     $protocol = @$_SERVER['SERVER_PROTOCOL'] ?: "HTTP/1.1";
     header("$protocol $code");
+    foreach( API_HEADERS as $key => $value ) {
+      header("$key: $value");
+    }
   }
 
   public static function code( int $code ) {
