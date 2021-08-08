@@ -5,13 +5,10 @@ namespace NoLibForIt\API;
 class Answer {
 
   private static function http( int $code ) {
-    if( ! defined('API_HEADERS') ) {
-      define('API_HEADERS',array());
-    }
     $protocol = @$_SERVER['SERVER_PROTOCOL'] ?: "HTTP/1.1";
     header("$protocol $code");
-    foreach( API_HEADERS as $key => $value ) {
-      header("$key: $value");
+    if( defined('API_ALLOW_ORIGIN') ) {
+      header("Access-Control-Allow-Origin ".API_ALLOW_ORIGIN);
     }
   }
 
@@ -27,12 +24,11 @@ class Answer {
   }
 
   public static function json( int $code, $obj ) {
-    $body = json_encode($obj, JSON_INVALID_UTF8_IGNORE);
+    $body = json_encode($obj);
     if( empty($body) ) {
-      self::code(520);
-    } else {
-      self::content($code,"application/json",$body);
+      self::code(520,array("error"=>"unable to encode json"));
     }
+    self::content($code,"application/json",$body);
   }
 
 }
