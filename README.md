@@ -10,36 +10,75 @@ environnement using docker.
 
 ## Setup
 
-### Environnement variables
+Assuming `/api` is the relative path you want to configure on your server, first
+add a rewrite rule to redirect `/api/*` to `/api/index.php`.
 
-`API_BASE_URI` defines the services location.
-```php
-define( "API_BASE_URI", "/api" );
+For Nginx, add:
+```
+  location /api/ {
+    rewrite /api/(.*) /api/index.php last;
+  }
 ```
 
-The http server **must** be configured to rewrite `API_BASE_URI` to
-`API_BASE_URI/index.php` which must call `Engine::handle()`.
+Then in `/api/index.php`
+- you may either use an autoloader or include:
+  - Answer.php
+  - Engine.php
+  - Request.php
+- define `API_BASE_URL` as `"/api"`
+- define `API_AUTH_FILE` as the path to the auth token
+- declare an associative array to map each endpoint to a class
+- invoke `Engine::handle($map)`
 
-`API_SERVICE` defines the routing table to map endpoints to an object which
-extends `\NoLibForIt\API\Service`
+Example:
 ```php
-define( 'API_SERVICE', array(
+<?php
+
+include('/srv/autoloader.php');
+
+define( "API_BASE_URI", "/api" );
+define( "API_AUTH_FILE", getenv("API_AUTH_FILE") ?: "/srv/token" );
+
+$map = array(
   'ping'   => '\NoLibForIt\Service\Ping',
   'server' => '\NoLibForIt\Service\DumpServer',
   'auth'   => '\NoLibForIt\Service\CheckAuth',
-));
+);
+
+NoLibForIt\API\Engine::handle($map);
+
+?>
 ```
 
-`API_AUTH_FILE` defines the file containing the token expected in the
-`Authorization` header request.
+## Service object
+
+Each service object **must**
+- have a **static** `handle($request)` method
+- have a way to call `Answer` **staticaly**
+
+Example:
 ```php
-define( "API_AUTH_FILE", "/srv/token"  );
+<?php
+
+namespace Vendor\Service;
+
+use \NoLibForIt\API\Answer as Answer;
+
+class Ping {
+
+  public static function handle($request) {
+    Answer::json(200,$request);
+  }
+
+}
+
+?>
 ```
 
 ### Authorization
 
 Authorization **must** be required explicity in the service object with a
-`$this->request->requireAuth();`
+`$request->requireAuth();`
 
 If auth fails, the `requireAuth()` method **will** die with a 403.
 
@@ -47,16 +86,6 @@ The `API_AUTH_FILE` content (the token) is parsed excluding starting and
 trailing " ","\n","\r".
 
 Once parsed, the token **must** be at least 16 chars long.
-
-
-## Service object
-
-The `Service` object is the abstract object which implements
-- `$this->request`
-- `$this->answer`
-- `$this->handle()`
-
-The `handle()` method is called when querying the endpoint.
 
 
 ### Answer with a body
