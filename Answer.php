@@ -24,9 +24,9 @@ class Answer {
   }
 
   public static function json( int $code, $obj ) {
-    $body = json_encode($obj);
+    $body = json_encode($obj, JSON_INVALID_UTF8_IGNORE);
     if( empty($body) ) {
-      self::code(520,array("error"=>"unable to encode json"));
+      self::json(520,array("error"=>"unable to encode json"));
     }
     self::content($code,"application/json",$body);
   }
