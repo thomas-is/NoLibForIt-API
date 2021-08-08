@@ -26,9 +26,14 @@ Then in `/api/index.php`
   - Engine.php
   - Request.php
 - define `API_BASE_URL` as `"/api"`
-- define `API_AUTH_FILE` as the path to the auth token
 - declare an associative array to map each endpoint to a class
 - invoke `Engine::handle($map)`
+
+If you want to use the token authentication, you **must** define `API_AUTH_FILE`
+with the path to the file containing the token (see below).
+
+If defined, `API_ALLOW_ORIGIN` controls the `Access-Control-Allow-Origin` header
+value. Set to `"*"` to avoid client side javascript CORS issues.
 
 Example:
 ```php
@@ -38,6 +43,7 @@ include('/srv/autoloader.php');
 
 define( "API_BASE_URI", "/api" );
 define( "API_AUTH_FILE", getenv("API_AUTH_FILE") ?: "/srv/token" );
+define( "API_ALLOW_ORIGIN", "*" );
 
 $map = array(
   'ping'   => '\NoLibForIt\Service\Ping',
@@ -80,7 +86,10 @@ class Ping {
 Authorization **must** be required explicity in the service object with a
 `$request->requireAuth();`
 
-If auth fails, the `requireAuth()` method **will** die with a 403.
+If the request does not have an Authorization header, the method **will** die
+with a 401 (unauthorized).
+If an Authorization header is specified but mismatch the token, the method
+**will** die with a 403 (forbidden).
 
 The `API_AUTH_FILE` content (the token) is parsed excluding starting and
 trailing " ","\n","\r".
