@@ -8,7 +8,7 @@ class Answer {
     $protocol = @$_SERVER['SERVER_PROTOCOL'] ?: "HTTP/1.1";
     header("$protocol $code");
     if( defined('API_ALLOW_ORIGIN') ) {
-      header("Access-Control-Allow-Origin ".API_ALLOW_ORIGIN);
+      header("Access-Control-Allow-Origin: ".API_ALLOW_ORIGIN);
     }
   }
 
