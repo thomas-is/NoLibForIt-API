@@ -28,6 +28,24 @@ class Engine {
     if( ! class_exists($serviceClass) ) {
       Answer::json(500,array("error"=>"class $serviceClass does not exist"));
     }
+
+
+    if( $request->method == "OPTIONS" ) {
+
+      # Allow: GET,HEAD,POST,OPTIONS,TRACE
+      # Content-Type: application/json
+
+      if(property_exists($serviceClass,"allow")) {
+        header("Allow: ".$serviceClass::allow);
+      }
+      if(property_exists($serviceClass,"contentType")) {
+        header("Content-Type: ".$serviceClass::contentType);
+      }
+      Answer::code(200);
+
+    }
+
+
     $serviceClass::handle($request);
     Answer::json(520,array("error"=>"service ended with no reply"));
   }
