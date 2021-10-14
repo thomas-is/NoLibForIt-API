@@ -1,0 +1,5 @@
+{
+  "ping.php": "\\NoLibForIt\\API\\Ping",
+  "server":   "\\NoLibForIt\\API\\DumpServer",
+  "auth":     "\\NoLibForIt\\API\\CheckAuth"
+}
