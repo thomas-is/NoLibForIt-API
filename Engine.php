@@ -6,13 +6,7 @@ namespace NoLibForIt\API;
   * @uses API_BASE_URL
   * @uses API_ALLOW_ORIGIN
   * @uses API_MAP_FILE
-  * {
-  *   "ping"   : "\NoLibForIt\Service\Ping",
-  *   "server" : "\NoLibForIt\Service\DumpServer",
-  *   "auth"   : "\NoLibForIt\Service\CheckAuth"
-  * }
   **/
-
 
 abstract class Service {
   public static $allow       = array( "GET", "POST", "PUT");
